@@ -29,4 +29,4 @@ def insert_user(request):
     })
 
     result = datastore_client.get(task_key)
-    print(result)
+    return result
