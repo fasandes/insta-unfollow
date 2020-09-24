@@ -1,8 +1,5 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
 from flask import escape
+from google.cloud import datastore
 
 
 def print_hi(request):
@@ -12,8 +9,24 @@ def print_hi(request):
     return 'Hello {}!'.format(escape(name))
 
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('On g cloud function!')
+def insert_user(request):
+    request_json = request.get_json(silent=True)
+    name = request_json['name']
+    username = request_json['username']
+    datastore_client = datastore.Client()
+    kind = 'user'
+    # The name/ID for the new entity
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    task_key = datastore_client.key(kind)
+    task = datastore.Entity(key=task_key)
+    task['name'] = name
+    task['username'] = username
+
+    # Saves the entity
+    datastore_client.put({
+        'name': name,
+        'username': username
+    })
+
+    result = datastore_client.get(task_key)
+    print(result)
