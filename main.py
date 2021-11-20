@@ -1,4 +1,4 @@
-from flask import escape
+from markupsafe import escape
 from google.cloud import datastore
 
 
@@ -35,8 +35,11 @@ def revoke_permissions(request):
     datastore_client = datastore.Client()
     kind = 'permission'
 
+    datastore_client.query()
     user_key = datastore_client.key(kind)
-    user = datastore.Entity(key=user_key)
-    user.update(request_json)
 
-    datastore_client.put(user)
+
+def return_users():
+
+
+
